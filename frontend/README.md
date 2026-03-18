@@ -75,8 +75,12 @@ src/
 │   ├── FormLogin.vue               # formulário de login
 │   ├── RegisterForm.vue            # formulário de cadastro
 │   ├── AccountForm.vue             # formulário de dados da conta
+│   ├── UserForm.vue                # formulário unificado de usuário (registro e conta); toggle "Cadastrar funcionário / Cadastrar paciente"
 │   ├── AppointmentList.vue         # lista de agendamentos
-│   ├── AppointmentForm.vue         # formulário de agendamento
+│   ├── AppointmentForm.vue         # formulário de agendamento (paciente)
+│   ├── AppointmentAdminForm.vue    # formulário de agendamento (funcionário)
+│   ├── ItemList.vue                # lista genérica com botão de remoção (emite o item inteiro no evento remove)
+│   ├── ManagementHeader.vue        # cabeçalho de telas de gerenciamento (props buttonText e showForm são opcionais)
 │   ├── SlotForm.vue                # formulário para criar slots
 │   └── SpecialityForm.vue          # formulário para criar especialidades
 ├── stores/

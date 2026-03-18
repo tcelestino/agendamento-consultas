@@ -9,7 +9,6 @@ API REST para agendamento de consultas médicas, com suporte a especialidades, s
 - **Banco de dados:** MongoDB via Mongoose
 - **HTTP client:** axios (instância compartilhada via `axios.create()`, injetada nos repositórios)
 - **Testes:** Vitest + Supertest
-- **Linting/Formatação:** ESLint 10 (flat config) + Prettier — sem ponto-e-vírgula, aspas simples, 100 chars de largura
 
 ## Instalação
 
@@ -19,22 +18,7 @@ npm install
 
 ## Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
-
-```env
-PORT=3000
-API_PREFIX=api
-API_VERSION=v1
-DATABASE_URL=mongodb://admin:admin@localhost:27017/appointments_api?authSource=admin
-MONGO_USERNAME=admin
-MONGO_PASSWORD=admin
-MONGO_DATABASE=appointments_api
-VIACEP_API=https://viacep.com.br/ws
-WEATHER_API=http://api.weatherapi.com
-WEATHER_API_KEY=sua_chave_aqui
-WEATHER_API_DAY=1
-JWT_SECRET=seu-secret-para-access-token
-```
+Muda o nome do arquivo `.env.example` para  `.env`.
 
 ## Comandos
 
@@ -45,12 +29,6 @@ npm test       # Executa todos os testes (unit + e2e)
 npm run test:unit  # Testes unitários
 npm run test:e2e   # Testes e2e
 npm run lint   # Lint com ESLint
-```
-
-Para rodar um único teste:
-
-```bash
-npm run test <caminho-do-arquivo>
 ```
 
 ## Endpoints
@@ -68,6 +46,8 @@ As rotas são prefixadas com `API_PREFIX` e `API_VERSION` (ex: `/api/v1`).
 | `PATCH` | `/users/:id` | sim | Atualiza um usuário |
 | `DELETE` | `/users/:id` | employee | Deleta um usuário |
 
+> Todos os usuários são criados com status `active` por padrão, independentemente do tipo (`user` ou `employee`).
+
 **Criar um usuário (paciente)**
 
 ```bash
@@ -78,7 +58,6 @@ curl -X POST http://localhost:3000/api/v1/users \
     "email": "email@example.com",
     "pass": "senha",
     "type": "user",
-    "status": "active",
     "address": {
       "zipCode": "01310100",
       "street": "Avenida Paulista",
@@ -98,8 +77,7 @@ curl -X POST http://localhost:3000/api/v1/users \
     "name": "nome",
     "email": "email@example.com",
     "pass": "senha",
-    "type": "employee",
-    "status": "active"
+    "type": "employee"
   }'
 ```
 
@@ -136,6 +114,7 @@ curl -X POST http://localhost:3000/api/v1/appointments \
   -H 'Authorization: Bearer seu-access-token' \
   -d '{
     "slotId": "slot-uuid",
+    "userId": "userId-uuid",
     "availableDateId": "available-date-uuid"
   }'
 ```
