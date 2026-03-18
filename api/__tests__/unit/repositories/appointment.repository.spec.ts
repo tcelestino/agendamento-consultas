@@ -5,7 +5,6 @@ const mocks = vi.hoisted(() => ({
   create: vi.fn(),
   find: vi.fn(),
   findOne: vi.fn(),
-  findOneAndUpdate: vi.fn(),
   findOneAndDelete: vi.fn(),
 }))
 
@@ -14,7 +13,6 @@ vi.mock('../../../src/models', () => ({
     create: mocks.create,
     find: mocks.find,
     findOne: mocks.findOne,
-    findOneAndUpdate: mocks.findOneAndUpdate,
     findOneAndDelete: mocks.findOneAndDelete,
   },
 }))
@@ -137,34 +135,6 @@ describe('AppointmentRepository', () => {
       await expect(repository.findById('apt-1')).rejects.toThrow(
         'Erro ao encontrar consulta por id',
       )
-    })
-  })
-
-  describe('cancelById', () => {
-    it('should return true when appointment is successfully cancelled', async () => {
-      mocks.findOneAndUpdate.mockResolvedValue({ id: 'apt-1' })
-
-      const result = await repository.cancelById('apt-1')
-
-      expect(result).toBe(true)
-      expect(mocks.findOneAndUpdate).toHaveBeenCalledWith(
-        { id: 'apt-1' },
-        { status: 'cancelled', updatedAt: expect.any(Date) },
-      )
-    })
-
-    it('should return false when appointment is not found', async () => {
-      mocks.findOneAndUpdate.mockResolvedValue(null)
-
-      const result = await repository.cancelById('non-existent')
-
-      expect(result).toBe(false)
-    })
-
-    it('should throw an error when cancel fails', async () => {
-      mocks.findOneAndUpdate.mockRejectedValue(new Error('DB error'))
-
-      await expect(repository.cancelById('apt-1')).rejects.toThrow('Erro ao cancelar consulta')
     })
   })
 

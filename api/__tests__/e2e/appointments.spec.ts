@@ -204,48 +204,6 @@ describe('AppointmentsController', () => {
     })
   })
 
-  describe('PATCH /appointments/:id/cancel', () => {
-    it('returns 401 when no auth token is provided', async () => {
-      const res = await request(app)
-        .patch(`${BASE}/appointments/appt-1/cancel`)
-        .query({ availableDateId: 'date-1' })
-
-      expect(res.status).toBe(401)
-    })
-
-    it('returns 400 when availableDateId is missing', async () => {
-      const res = await request(app).patch(`${BASE}/appointments/appt-1/cancel`).set(userAuth)
-
-      expect(res.status).toBe(400)
-      expect(res.body).toHaveProperty('error')
-    })
-
-    it('returns 204 on successful appointment cancellation', async () => {
-      vi.mocked(appointmentService.cancel).mockResolvedValue()
-
-      const res = await request(app)
-        .patch(`${BASE}/appointments/appt-1/cancel`)
-        .set(userAuth)
-        .query({ availableDateId: 'date-1' })
-
-      expect(res.status).toBe(204)
-    })
-
-    it('returns 500 when service throws an error', async () => {
-      vi.mocked(appointmentService.cancel).mockRejectedValue(
-        new Error('Agendamento não encontrado'),
-      )
-
-      const res = await request(app)
-        .patch(`${BASE}/appointments/unknown/cancel`)
-        .set(userAuth)
-        .query({ availableDateId: 'date-1' })
-
-      expect(res.status).toBe(500)
-      expect(res.body).toHaveProperty('error', 'Agendamento não encontrado')
-    })
-  })
-
   describe('DELETE /appointments/:id', () => {
     it('returns 401 when no auth token is provided', async () => {
       const res = await request(app)
@@ -255,8 +213,17 @@ describe('AppointmentsController', () => {
       expect(res.status).toBe(401)
     })
 
+    it('returns 403 when user does not have employee access', async () => {
+      const res = await request(app)
+        .delete(`${BASE}/appointments/appt-1`)
+        .set(userAuth)
+        .query({ availableDateId: 'date-1' })
+
+      expect(res.status).toBe(403)
+    })
+
     it('returns 400 when availableDateId is missing', async () => {
-      const res = await request(app).delete(`${BASE}/appointments/appt-1`).set(userAuth)
+      const res = await request(app).delete(`${BASE}/appointments/appt-1`).set(employeeAuth)
 
       expect(res.status).toBe(400)
       expect(res.body).toHaveProperty('error')
@@ -267,7 +234,7 @@ describe('AppointmentsController', () => {
 
       const res = await request(app)
         .delete(`${BASE}/appointments/appt-1`)
-        .set(userAuth)
+        .set(employeeAuth)
         .query({ availableDateId: 'date-1' })
 
       expect(res.status).toBe(204)
@@ -280,7 +247,7 @@ describe('AppointmentsController', () => {
 
       const res = await request(app)
         .delete(`${BASE}/appointments/unknown`)
-        .set(userAuth)
+        .set(employeeAuth)
         .query({ availableDateId: 'date-1' })
 
       expect(res.status).toBe(500)
