@@ -26,7 +26,7 @@ const isRegister = props.mode === 'register'
 
 // register-only
 const showAddressFields = ref(true)
-const textRegister = ref('Sou um funcionário')
+const textRegister = ref('Cadastrar funcionário')
 
 // account-only
 const editing = ref(false)
@@ -99,7 +99,7 @@ async function onZipCodeBlur() {
 
 function toggleAddressFields(e: MouseEvent) {
   showAddressFields.value = !showAddressFields.value
-  textRegister.value = showAddressFields.value ? 'Sou um funcionário' : 'Sou um paciente'
+  textRegister.value = showAddressFields.value ? 'Cadastrar funcionário' : 'Cadastrar paciente'
   formFields.userType = showAddressFields.value ? 'user' : 'employee'
   if (showAddressFields.value) {
     formFields.address = {

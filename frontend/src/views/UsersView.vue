@@ -84,12 +84,7 @@ onMounted(async () => {
       @click:button="showForm = !showForm"
     />
 
-    <UserForm
-      v-if="showForm"
-      mode="register"
-      :on-success="onUserAdded"
-      :show-employee-link="false"
-    />
+    <UserForm v-if="showForm" mode="register" :on-success="onUserAdded" />
 
     <template v-if="!showForm">
       <template v-if="isLoading">
