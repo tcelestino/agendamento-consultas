@@ -24,7 +24,7 @@ const buttonText = {
   cancel: 'Cancelar',
 }
 
-async function removeSpeciality(id: string) {
+async function removeSpeciality({ id }: { id: string }) {
   removingId.value = id
   try {
     const response = await fetch(

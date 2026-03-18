@@ -250,7 +250,13 @@ onMounted(async () => {
       <AppSelect
         id="professional"
         label="Profissionais de saúde:"
-        :placeholder="!selectedSchedule ? 'Selecione um horário' : 'Selecione o profissional'"
+        :placeholder="
+          !selectedSchedule
+            ? 'Selecione um horário'
+            : professionals.length === 0
+              ? 'Nenhum médico cadastrado'
+              : 'Selecione o profissional'
+        "
         :options="professionals"
         v-model="selectedProfessional"
         :disabled="!selectedSchedule"

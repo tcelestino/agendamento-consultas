@@ -43,7 +43,7 @@ async function fetchUsers() {
   return await response.json()
 }
 
-async function removeUser(id: string) {
+async function removeUser({ id }: { id: string }) {
   removingId.value = id
   try {
     const response = await fetch(`${import.meta.env.VITE_AGENDAMENTO_API}/api/v1/users/${id}`, {

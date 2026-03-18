@@ -12,7 +12,7 @@ withDefaults(
 )
 
 defineEmits<{
-  remove: [id: string]
+  remove: [item: T]
 }>()
 </script>
 
@@ -26,7 +26,7 @@ defineEmits<{
         v-if="showRemoveButton"
         class="list__remove-btn"
         :disabled="removingId === item.id"
-        @click="$emit('remove', item.id)"
+        @click="$emit('remove', item)"
       >
         {{ removingId === item.id ? 'Removendo...' : 'Remover' }}
       </button>

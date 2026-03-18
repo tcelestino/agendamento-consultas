@@ -4,12 +4,12 @@ import AppButton from '@/components/AppButton.vue'
 withDefaults(
   defineProps<{
     title: string
-    buttonText: {
+    buttonText?: {
       add: string
       cancel: string
     }
     showButton?: boolean
-    showForm: boolean
+    showForm?: boolean
   }>(),
   {
     title: '',
