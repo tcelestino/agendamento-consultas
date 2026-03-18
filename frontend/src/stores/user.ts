@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
+import router from '@/router'
 
 const STORAGE_KEY = 'user_session'
-
-const router = useRouter()
 
 type UserData = {
   id: string

@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import Loading from '@/components/Loading.vue'
 import AppButton from '@/components/AppButton.vue'
-import RegisterForm from '@/components/RegisterForm.vue'
+import UserForm from '@/components/UserForm.vue'
 
 type User = {
   id: string
@@ -78,10 +78,10 @@ onMounted(async () => {
       </AppButton>
     </div>
 
-    <RegisterForm
+    <UserForm
       v-if="showForm"
+      mode="register"
       :on-success="onUserAdded"
-      :show-title="false"
       :show-employee-link="false"
     />
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import RegisterForm from '@/components/RegisterForm.vue'
+import UserForm from '@/components/UserForm.vue'
 </script>
 
 <template>
   <div class="page-container">
     <h2 class="page__title">Criar uma conta</h2>
-    <RegisterForm />
+    <UserForm mode="register" />
   </div>
 </template>
 

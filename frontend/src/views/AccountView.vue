@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import AccountForm from '@/components/AccountForm.vue'
+import UserForm from '@/components/UserForm.vue'
 </script>
 
 <template>
   <main class="internal-container">
     <h2 class="page__title">Minha Conta</h2>
-    <AccountForm />
+    <UserForm mode="account" />
   </main>
 </template>
