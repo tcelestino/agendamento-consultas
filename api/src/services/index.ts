@@ -1,0 +1,7 @@
+export * from './weather.service'
+export * from './speciality.service'
+export * from './slot.service'
+export * from './user.service'
+export * from './auth.service'
+export * from './address.service'
+export * from './appointment.service'

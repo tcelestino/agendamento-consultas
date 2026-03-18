@@ -1,0 +1,6 @@
+export * from './appointment.repository.interface'
+export * from './speciality.repository.interface'
+export * from './slot.repository.interface'
+export * from './address.repository.interface'
+export * from './weather.repository.interface'
+export * from './user.repository.interface'

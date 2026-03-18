@@ -1,0 +1,6 @@
+export * from './appointments.controller'
+export * from './specialties.controller'
+export * from './slots.controller'
+export * from './infos.controller'
+export * from './user.controller'
+export * from './auth.controller'

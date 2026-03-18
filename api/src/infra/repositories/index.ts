@@ -1,0 +1,6 @@
+export * from './address.repository'
+export { AppointmentRepository } from './appointment.repository'
+export { SpecialityRepository } from './speciality.repository'
+export { SlotRepository } from './slot.repository'
+export { WeatherRepository } from './weather.repository'
+export { UserRepository } from './user.repository'
