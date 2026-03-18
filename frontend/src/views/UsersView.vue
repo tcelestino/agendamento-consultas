@@ -3,8 +3,9 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import Loading from '@/components/Loading.vue'
-import AppButton from '@/components/AppButton.vue'
 import UserForm from '@/components/UserForm.vue'
+import ManagementHeader from '@/components/ManagementHeader.vue'
+import ItemList from '@/components/ItemList.vue'
 
 type User = {
   id: string
@@ -14,11 +15,15 @@ type User = {
 
 const userStore = useUserStore()
 const router = useRouter()
-
 const users = ref<User[]>([])
 const isLoading = ref(true)
 const removingId = ref<string | null>(null)
 const showForm = ref(false)
+
+const buttonText = {
+  add: 'Adicionar usuário',
+  cancel: 'Cancelar',
+}
 
 async function onUserAdded() {
   showForm.value = false
@@ -70,13 +75,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="users">
-    <div class="users__header">
-      <h2 class="users__title">Gerenciar Usuários</h2>
-      <AppButton type="button" @click="showForm = !showForm">
-        {{ showForm ? 'Cancelar' : 'Adicionar usuário' }}
-      </AppButton>
-    </div>
+  <main class="internal-container">
+    <ManagementHeader
+      title="Usuários"
+      :buttonText="buttonText"
+      :show-form="showForm"
+      @click:button="showForm = !showForm"
+    />
 
     <UserForm
       v-if="showForm"
@@ -91,88 +96,19 @@ onMounted(async () => {
       </template>
 
       <template v-else>
-        <p v-if="users.length === 0" class="users__empty">Nenhum usuário encontrado.</p>
-
-        <ul v-else class="users__list">
-          <li v-for="user in users" :key="user.id" class="users__item">
-            <div class="users__info">
-              <span class="users__name">{{ user.name }}</span>
-              <span class="users__email">{{ user.email }}</span>
-            </div>
-            <button
-              class="users__remove-btn"
-              :disabled="removingId === user.id"
-              @click="removeUser(user.id)"
-            >
-              {{ removingId === user.id ? 'Removendo...' : 'Remover' }}
-            </button>
-          </li>
-        </ul>
+        <EmptyList v-if="users.length === 0" text="Nenhum usuário encontrado." />
+        <ItemList v-else :items="users" :removing-id="removingId" @remove="removeUser">
+          <template #default="{ item }">
+            <span class="users__name">{{ item.name }}</span>
+            <span class="users__email">{{ item.email }}</span>
+          </template>
+        </ItemList>
       </template>
     </template>
   </main>
 </template>
 
 <style scoped>
-.users {
-  padding: 1.5rem 1rem;
-  max-width: 640px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.users__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.users__header :deep(.app-button) {
-  width: auto;
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
-}
-
-.users__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.users__empty {
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.users__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
-}
-
-.users__item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.875rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-input);
-  gap: 1rem;
-}
-
-.users__info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-  min-width: 0;
-}
-
 .users__name {
   font-weight: 600;
   color: var(--color-text);
@@ -187,35 +123,5 @@ onMounted(async () => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.users__remove-btn {
-  flex-shrink: 0;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: var(--radius-button);
-  background-color: var(--color-error);
-  color: #fff;
-  font-family: var(--font-family);
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.users__remove-btn:hover:not(:disabled) {
-  opacity: 0.85;
-}
-
-.users__remove-btn:disabled {
-  background-color: var(--color-button-disabled);
-  color: var(--color-button-text-disabled);
-  cursor: not-allowed;
-}
-
-@media (min-width: 768px) {
-  .users {
-    padding: 1rem 0;
-  }
 }
 </style>

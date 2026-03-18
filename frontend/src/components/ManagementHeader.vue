@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import AppButton from '@/components/AppButton.vue'
 
-defineProps({
-  title: String,
-  buttonText: {
-    type: Object,
-    default: () => ({
-      add: 'Adicionar',
-      cancel: 'Cancelar',
-    }),
+withDefaults(
+  defineProps<{
+    title: string
+    buttonText: {
+      add: string
+      cancel: string
+    }
+    showButton?: boolean
+    showForm: boolean
+  }>(),
+  {
+    title: '',
+    buttonText: () => ({ add: 'Adicionar', cancel: 'Cancelar' }),
+    showButton: true,
+    showForm: false,
   },
-  cancelText: String,
-  showButton: {
-    type: Boolean,
-    default: true,
-  },
-  showForm: {
-    type: Boolean,
-    default: false,
-  },
-})
+)
 
 const emit = defineEmits<{ 'click:button': [] }>()
 </script>

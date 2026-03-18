@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import ManagementList from '@/components/ManagementList.vue'
+import NavigationList from '@/components/NavigationList.vue'
 
-const listLink = [
+type NavLink = {
+  link: string
+  text: string
+}
+
+const navLinks: NavLink[] = [
   {
     link: '/dashboard/usuarios',
     text: 'Gerenciar Usuários',
@@ -24,6 +29,6 @@ const listLink = [
 <template>
   <main class="internal-container">
     <p>Selecione uma opção abaixo:</p>
-    <ManagementList :links="listLink" />
+    <NavigationList :links="navLinks" />
   </main>
 </template>

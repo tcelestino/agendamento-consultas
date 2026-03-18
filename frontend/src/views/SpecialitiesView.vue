@@ -3,8 +3,10 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import Loading from '@/components/Loading.vue'
-import AppButton from '@/components/AppButton.vue'
+import ManagementHeader from '@/components/ManagementHeader.vue'
 import SpecialityForm from '@/components/SpecialityForm.vue'
+import ItemList from '@/components/ItemList.vue'
+import EmptyList from '@/components/EmptyList.vue'
 
 type Speciality = {
   id: string
@@ -13,11 +15,14 @@ type Speciality = {
 
 const userStore = useUserStore()
 const router = useRouter()
-
 const specialities = ref<Speciality[]>([])
 const isLoading = ref(true)
 const showForm = ref(false)
 const removingId = ref<string | null>(null)
+const buttonText = {
+  add: 'Adicionar especialidade',
+  cancel: 'Cancelar',
+}
 
 async function removeSpeciality(id: string) {
   removingId.value = id
@@ -73,13 +78,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="specialities">
-    <div class="specialities__header">
-      <h2 class="specialities__title">Gerenciar Especialidades</h2>
-      <AppButton type="button" @click="showForm = !showForm">
-        {{ showForm ? 'Cancelar' : 'Adicionar especialidade' }}
-      </AppButton>
-    </div>
+  <main class="internal-container">
+    <ManagementHeader
+      title="Especialidades"
+      :buttonText="buttonText"
+      :show-form="showForm"
+      @click:button="showForm = !showForm"
+    />
 
     <SpecialityForm v-if="showForm" :on-success="onSpecialityAdded" />
 
@@ -89,112 +94,20 @@ onMounted(async () => {
       </template>
 
       <template v-else>
-        <p v-if="specialities.length === 0" class="specialities__empty">
-          Nenhuma especialidade encontrada.
-        </p>
-
-        <ul v-else class="specialities__list">
-          <li v-for="speciality in specialities" :key="speciality.id" class="specialities__item">
-            <span class="specialities__name">{{ speciality.name }}</span>
-            <button
-              class="specialities__remove-btn"
-              :disabled="removingId === speciality.id"
-              @click="removeSpeciality(speciality.id)"
-            >
-              {{ removingId === speciality.id ? 'Removendo...' : 'Remover' }}
-            </button>
-          </li>
-        </ul>
+        <EmptyList v-if="specialities.length === 0" text="Nenhuma especialidade encontrada." />
+        <ItemList v-else :items="specialities" :removing-id="removingId" @remove="removeSpeciality">
+          <template #default="{ item }">
+            <span class="specialities__name">{{ item.name }}</span>
+          </template>
+        </ItemList>
       </template>
     </template>
   </main>
 </template>
 
 <style scoped>
-.specialities {
-  padding: 1.5rem 1rem;
-  max-width: 640px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.specialities__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.specialities__header :deep(.app-button) {
-  width: auto;
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
-}
-
-.specialities__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.specialities__empty {
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.specialities__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
-}
-
-.specialities__item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.875rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-input);
-  gap: 1rem;
-}
-
 .specialities__name {
   font-weight: 600;
   color: var(--color-text);
-}
-
-.specialities__remove-btn {
-  flex-shrink: 0;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: var(--radius-button);
-  background-color: var(--color-error);
-  color: #fff;
-  font-family: var(--font-family);
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.specialities__remove-btn:hover:not(:disabled) {
-  opacity: 0.85;
-}
-
-.specialities__remove-btn:disabled {
-  background-color: var(--color-button-disabled);
-  color: var(--color-button-text-disabled);
-  cursor: not-allowed;
-}
-
-@media (min-width: 768px) {
-  .specialities {
-    padding: 1rem 0;
-  }
 }
 </style>
