@@ -13,7 +13,11 @@ appointmentsRouter.get(
   appointmentsController.listAll,
 )
 appointmentsRouter.get('/appointments/:userId', authMiddleware, appointmentsController.listByUserId)
-appointmentsRouter.delete('/appointments/:id', authMiddleware, appointmentsController.delete)
-appointmentsRouter.patch('/appointments/:id/cancel', authMiddleware, appointmentsController.cancel)
+appointmentsRouter.delete(
+  '/appointments/:id',
+  authMiddleware,
+  accessMiddleware(USER_TYPE.EMPLOYEE),
+  appointmentsController.delete,
+)
 
 export { appointmentsRouter }

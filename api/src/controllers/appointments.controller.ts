@@ -7,7 +7,6 @@ export class AppointmentsController {
     this.save = this.save.bind(this)
     this.listAll = this.listAll.bind(this)
     this.listByUserId = this.listByUserId.bind(this)
-    this.cancel = this.cancel.bind(this)
     this.delete = this.delete.bind(this)
   }
 
@@ -65,27 +64,6 @@ export class AppointmentsController {
     try {
       const result = await this.appointmentService.listByUserId(userId as string)
       return res.status(200).json(result)
-    } catch (error) {
-      return res.status(500).json({ error: (error as Error).message })
-    }
-  }
-
-  async cancel(req: Request, res: Response) {
-    const userId = req.userId
-    if (!userId) {
-      return res.status(401).json({ error: 'Usuário não autorizado' })
-    }
-
-    const { id } = req.params
-    const { availableDateId } = req.query
-    if (!id || !availableDateId) {
-      return res
-        .status(400)
-        .json({ error: 'ID do agendamento e ID da data disponíveis são obrigatórios' })
-    }
-    try {
-      await this.appointmentService.cancel(id as string, availableDateId as string)
-      return res.status(204).end()
     } catch (error) {
       return res.status(500).json({ error: (error as Error).message })
     }

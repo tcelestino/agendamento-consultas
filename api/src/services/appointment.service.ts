@@ -129,15 +129,6 @@ export class AppointmentService {
     )
   }
 
-  async cancel(appointmentId: string, availableDateId: string): Promise<void> {
-    const cancelled = await this.appointmentRepo.cancelById(appointmentId)
-    if (!cancelled) {
-      throw new Error('Agendamento não encontrado')
-    }
-
-    await this.slotService.releaseSlot(appointmentId, availableDateId)
-  }
-
   async delete(appointmentId: string, availableDateId: string): Promise<void> {
     const deleted = await this.appointmentRepo.deleteById(appointmentId)
     if (!deleted) {

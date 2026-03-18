@@ -14,6 +14,5 @@ export interface IAppointmentRepository {
   findAll(): Promise<IAppointmentData[]>
   findByUserId(userId: string): Promise<IAppointmentData[]>
   findById(id: string): Promise<IAppointmentData | null>
-  cancelById(id: string): Promise<boolean>
   deleteById(id: string): Promise<boolean>
 }

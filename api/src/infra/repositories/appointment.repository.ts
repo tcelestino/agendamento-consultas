@@ -42,19 +42,6 @@ export class AppointmentRepository implements IAppointmentRepository {
     }
   }
 
-  async cancelById(id: string): Promise<boolean> {
-    try {
-      const result = await Appointment.findOneAndUpdate(
-        { id },
-        { status: 'cancelled', updatedAt: new Date() },
-      )
-      return result !== null
-    } catch (error) {
-      logger.error(error)
-      throw new Error('Erro ao cancelar consulta')
-    }
-  }
-
   async deleteById(id: string): Promise<boolean> {
     try {
       const deleted = await Appointment.findOneAndDelete({ id })
