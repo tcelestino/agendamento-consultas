@@ -4,7 +4,7 @@ import RegisterForm from '@/components/RegisterForm.vue'
 
 <template>
   <div class="page-container">
-    <h2 class="page-container__title">Criar uma conta</h2>
+    <h2 class="page__title">Criar uma conta</h2>
     <RegisterForm />
   </div>
 </template>

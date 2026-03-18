@@ -11,19 +11,18 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
 const userStore = useUserStore()
-
 const specialities = ref([])
 const professionals = ref([])
+const selectedSpeciality = ref()
+const selectedSchedule = ref()
+const selectedProfessional = ref()
+const submitted = ref(false)
+
 const schedules = ref<{ id: string; availableDate: Record<string, string>[] }>({
   id: '',
   availableDate: [],
 })
-
-const selectedSpeciality = ref()
-const selectedSchedule = ref()
-const selectedProfessional = ref()
 
 const hasError = ref({
   speciality: false,
@@ -38,8 +37,6 @@ const toastKeys = ref({
   success: 0,
 })
 
-const submitted = ref(false)
-
 async function loadSpecialities() {
   hasError.value.speciality = false
   try {
@@ -49,8 +46,14 @@ async function loadSpecialities() {
       },
     })
     if (!response.ok) {
+      if (response.status === 401) {
+        userStore.logout()
+        return
+      }
+
       throw new Error('Error ao carregar especialidades')
     }
+
     const data = await response.json()
 
     if (!data.length) {
@@ -156,7 +159,7 @@ function resetForm() {
   schedules.value = { id: '', availableDate: [] }
 }
 
-async function onSave(e: SubmitEvent) {
+async function handleSubmit(e: SubmitEvent) {
   e.preventDefault()
   try {
     const payload = {
@@ -217,8 +220,8 @@ onMounted(async () => {
     message="Consulta marcada com sucesso!"
   />
 
-  <div class="appointment-form__card">
-    <form class="appointment-form__form" @submit="onSave" novalidate>
+  <section class="forms-container">
+    <form class="forms__form" @submit="handleSubmit" novalidate>
       <AppSelect
         id="specialty"
         label="Especialidade:"
@@ -255,21 +258,5 @@ onMounted(async () => {
       <AppInput id="slotId" type="hidden" v-model="schedules.id" />
       <AppButton type="submit" :disabled="!selectedProfessional">Agendar</AppButton>
     </form>
-  </div>
+  </section>
 </template>
-
-<style scoped>
-.appointment-form__card {
-  background-color: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.25rem 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-.appointment-form__form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-</style>

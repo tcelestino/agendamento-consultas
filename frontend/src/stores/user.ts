@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 
 const STORAGE_KEY = 'user_session'
+
+const router = useRouter()
 
 type UserData = {
   id: string
@@ -53,6 +56,7 @@ export const useUserStore = defineStore('user', {
       this.accessToken = undefined
       this.userData = undefined
       sessionStorage.removeItem(STORAGE_KEY)
+      router.push('/')
     },
   },
 })

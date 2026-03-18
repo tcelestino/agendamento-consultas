@@ -19,10 +19,8 @@ type UserData = {
 }
 
 const userStore = useUserStore()
-
 const user = ref<UserData | null>(null)
 const originalUser = ref<UserData | null>(null)
-
 const editing = ref(false)
 const showSuccess = ref(false)
 
@@ -116,7 +114,7 @@ async function onZipCodeBlur() {
   user.value.address.state = { code: address.stateCode }
 }
 
-async function onSave(e: SubmitEvent) {
+async function handleSubmit(e: SubmitEvent) {
   e.preventDefault()
 
   const payload = buildPayload()
@@ -139,6 +137,10 @@ async function onSave(e: SubmitEvent) {
     )
 
     if (!response.ok) {
+      if (response.status === 401) {
+        userStore.logout()
+        return
+      }
       throw new Error('Error ao salvar dados do usuário')
     }
 
@@ -152,6 +154,7 @@ async function onSave(e: SubmitEvent) {
     showSuccess.value = true
   } catch (error) {
     console.error(error)
+    userStore.logout()
   }
 }
 
@@ -170,89 +173,60 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="account-form">
-    <Toast v-if="showSuccess" type="success" message="Salvo com sucesso" />
-    <h2 class="account-form__title">Minha Conta</h2>
-    <p v-if="!user">Usuário não encontrado</p>
-    <div class="account-form__card" v-else>
-      <form class="account-form__form" @submit="onSave" novalidate>
-        <AppInput id="name" label="Nome" type="text" v-model="user.name" :disabled="!editing" />
-        <AppInput id="email" label="Email" type="email" v-model="user.email" :disabled="!editing" />
+  <Toast v-if="showSuccess" type="success" message="Salvo com sucesso" />
+  <p v-if="!user">Usuário não encontrado</p>
+  <section class="forms-container" v-else>
+    <form class="forms__form" @submit="handleSubmit" novalidate>
+      <AppInput id="name" label="Nome" type="text" v-model="user.name" :disabled="!editing" />
+      <AppInput id="email" label="Email" type="email" v-model="user.email" :disabled="!editing" />
 
-        <template v-if="userStore.userData?.type === 'user'">
-          <div class="account-form__row">
-            <AppInput
-              id="zipCode"
-              label="CEP:"
-              type="text"
-              placeholder="ex.: 41.720-010"
-              v-model="zipCodeMasked"
-              :disabled="!editing"
-              @blur="onZipCodeBlur"
-            />
-            <AppInput
-              id="state"
-              label="Estado:"
-              type="text"
-              v-model="user.address.state.code"
-              disabled
-            />
-          </div>
-
+      <template v-if="userStore.userData?.type === 'user'">
+        <div class="account-form__row">
           <AppInput
-            id="street"
-            label="Endereço:"
+            id="zipCode"
+            label="CEP:"
             type="text"
-            v-model="user.address.street"
+            placeholder="ex.: 41.720-010"
+            v-model="zipCodeMasked"
+            :disabled="!editing"
+            @blur="onZipCodeBlur"
+          />
+          <AppInput
+            id="state"
+            label="Estado:"
+            type="text"
+            v-model="user.address.state.code"
             disabled
           />
+        </div>
 
-          <div class="account-form__row">
-            <AppInput id="city" label="Cidade:" type="text" v-model="user.address.city" disabled />
-            <AppInput
-              id="neighborhood"
-              label="Bairro:"
-              type="text"
-              v-model="user.address.neighborhood"
-              disabled
-            />
-          </div>
-        </template>
+        <AppInput
+          id="street"
+          label="Endereço:"
+          type="text"
+          v-model="user.address.street"
+          disabled
+        />
 
-        <AppButton v-if="!editing" type="button" @click="onEdit">Editar</AppButton>
-        <AppButton v-else type="submit" @click="onSave">Salvar</AppButton>
-      </form>
-    </div>
-  </div>
+        <div class="account-form__row">
+          <AppInput id="city" label="Cidade:" type="text" v-model="user.address.city" disabled />
+          <AppInput
+            id="neighborhood"
+            label="Bairro:"
+            type="text"
+            v-model="user.address.neighborhood"
+            disabled
+          />
+        </div>
+      </template>
+
+      <AppButton v-if="!editing" type="button" @click="onEdit">Editar</AppButton>
+      <AppButton v-else type="submit" @click="handleSubmit">Salvar</AppButton>
+    </form>
+  </section>
 </template>
 
 <style scoped>
-.account-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.account-form__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.account-form__card {
-  background-color: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 1.25rem 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-.account-form__form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .account-form__row {
   display: grid;
   grid-template-columns: 1fr 1fr;
