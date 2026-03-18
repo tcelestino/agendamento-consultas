@@ -23,10 +23,10 @@ Sistema web para agendamento de consultas médicas com autenticação, integraç
 
 #### Dependencias externas
 
-- [Weather API](http://api.weatherapi.com)
+- [Weather API](https://www.weatherapi.com/)
 - [ViaCEP](https://viacep.com.br)
 
-Mais detalhes no [README.md](https://github.com/tcelestino/agendamento-consultas/blob/main/api/README.md) do projeto.
+Mais detalhes no [README.md](https://github.com/tcelestino/agendamento-consultas/blob/main/api/README.md).
 
 ### Frontend (`frontend/`)
 
@@ -35,7 +35,7 @@ Mais detalhes no [README.md](https://github.com/tcelestino/agendamento-consultas
 - Vue Router 5
 - Vitest + Vue Test Utils
 
-Mais detalhes no [README.md](https://github.com/tcelestino/agendamento-consultas/blob/main/frontend/README.md) do projeto.
+Mais detalhes no [README.md](https://github.com/tcelestino/agendamento-consultas/blob/main/frontend/README.md).
 
 ### Infraestrutura
 
