@@ -3,8 +3,10 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import Loading from '@/components/Loading.vue'
-import AppButton from '@/components/AppButton.vue'
 import SlotForm from '@/components/SlotForm.vue'
+import ManagementHeader from '@/components/ManagementHeader.vue'
+import EmptyList from '@/components/EmptyList.vue'
+import ItemList from '@/components/ItemList.vue'
 
 type Slot = {
   id: string
@@ -15,10 +17,13 @@ type Slot = {
 
 const userStore = useUserStore()
 const router = useRouter()
-
 const slots = ref<Slot[]>([])
 const isLoading = ref(true)
 const showForm = ref(false)
+const buttonText = {
+  add: 'Adicionar agenda',
+  cancel: 'Cancelar',
+}
 
 async function onSlotAdded() {
   showForm.value = false
@@ -54,13 +59,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="slots">
-    <div class="slots__header">
-      <h2 class="slots__title">Agenda</h2>
-      <AppButton type="button" @click="showForm = !showForm">
-        {{ showForm ? 'Cancelar' : 'Adicionar agenda' }}
-      </AppButton>
-    </div>
+  <main class="internal-container">
+    <ManagementHeader
+      title="Agenda"
+      :buttonText="buttonText"
+      :show-form="showForm"
+      @click:button="showForm = !showForm"
+    />
 
     <SlotForm v-if="showForm" :on-success="onSlotAdded" />
 
@@ -70,83 +75,41 @@ onMounted(async () => {
       </template>
 
       <template v-else>
-        <p v-if="slots.length === 0" class="slots__empty">Nenhum slot encontrado.</p>
+        <EmptyList v-if="slots.length === 0" text="Nenhum slot encontrado." />
 
-        <ul v-else class="slots__list">
-          <li v-for="slot in slots" :key="slot.id" class="slots__item">
-            <div class="slots__info">
-              <h3 class="slots__doctor">{{ slot.doctor.name }}</h3>
-              <p class="slots__meta" v-if="totalSlots(slot) === 0">Nenhum horário disponível</p>
-              <p class="slots__meta" v-else>
-                {{ totalSlots(slot) }} horário{{ totalSlots(slot) !== 1 ? 's' : '' }} disponíve{{
-                  totalSlots(slot) === 1 ? 'l' : 'is'
-                }}
-              </p>
+        <ItemList v-else :items="slots" :showRemoveButton="false">
+          <template #default="{ item }">
+            <div class="slots__item">
+              <div class="slots__info">
+                <h3 class="slots__doctor">{{ item.doctor.name }}</h3>
+                <p class="slots__meta" v-if="totalSlots(item) === 0">Nenhum horário disponível</p>
+                <p class="slots__meta" v-else>
+                  {{ totalSlots(item) }} horário{{ totalSlots(item) !== 1 ? 's' : '' }} disponíve{{
+                    totalSlots(item) === 1 ? 'l' : 'is'
+                  }}
+                </p>
+              </div>
+              <span
+                class="slots__badge"
+                :class="{ 'slots__badge--available': item.availableDate.some((d) => !d.isBooked) }"
+              >
+                {{ item.availableDate.some((d) => !d.isBooked) ? 'Com vagas' : 'Sem vagas' }}
+              </span>
             </div>
-            <span
-              class="slots__badge"
-              :class="{ 'slots__badge--available': slot.availableDate.some((d) => !d.isBooked) }"
-            >
-              {{ slot.availableDate.some((d) => !d.isBooked) ? 'Com vagas' : 'Sem vagas' }}
-            </span>
-          </li>
-        </ul>
+          </template>
+        </ItemList>
       </template>
     </template>
   </main>
 </template>
 
 <style scoped>
-.slots {
-  padding: 1.5rem 1rem;
-  max-width: 640px;
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.slots__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.slots__header :deep(.app-button) {
-  width: auto;
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
-}
-
-.slots__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.slots__empty {
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.slots__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
-}
-
 .slots__item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.875rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-input);
   gap: 1rem;
+  width: 100%;
 }
 
 .slots__info {

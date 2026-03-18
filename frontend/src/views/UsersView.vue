@@ -6,6 +6,7 @@ import Loading from '@/components/Loading.vue'
 import UserForm from '@/components/UserForm.vue'
 import ManagementHeader from '@/components/ManagementHeader.vue'
 import ItemList from '@/components/ItemList.vue'
+import EmptyList from '@/components/EmptyList.vue'
 
 type User = {
   id: string
