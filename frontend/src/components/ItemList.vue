@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends { id: string }">
 withDefaults(
   defineProps<{
-    items: Array<{ id: string; [key: string]: unknown }>
+    items: T[]
     removingId?: string | null
     showRemoveButton?: boolean
   }>(),
@@ -58,6 +58,7 @@ defineEmits<{
   flex-direction: column;
   gap: 0.125rem;
   min-width: 0;
+  width: 100%;
 }
 
 .list__remove-btn {
