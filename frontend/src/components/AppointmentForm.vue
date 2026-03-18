@@ -5,6 +5,7 @@ import Toast from '@/components/Toast.vue'
 import AppInput from '@/components/AppInput.vue'
 import AppSelect from '@/components/AppSelect.vue'
 import AppButton from '@/components/AppButton.vue'
+import { reverseDate } from '@/utils'
 
 interface Props {
   onSuccess?: () => void
@@ -90,7 +91,7 @@ async function loadSchedules(specialityId: string) {
     const availableData = data.flatMap((item: { availableDate: Record<string, string>[] }) =>
       item.availableDate.map((available: Record<string, string>) => ({
         id: available.id,
-        name: `${available.date} - ${available.time}`,
+        name: `${reverseDate(available.date)} às ${available.time}`,
       })),
     )
 
