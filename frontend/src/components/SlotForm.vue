@@ -10,13 +10,11 @@ interface Props {
   onSuccess?: () => void
 }
 
-const props = defineProps<Props>()
-
-const userStore = useUserStore()
-
 type Speciality = { id: string; name: string }
 type DateEntry = { date: string; time: string }
 
+const props = defineProps<Props>()
+const userStore = useUserStore()
 const specialities = ref<Speciality[]>([])
 const selectedSpecialityId = ref('')
 const doctorName = ref('')
@@ -81,7 +79,7 @@ onMounted(async () => {
 
 <template>
   <Toast v-if="hasError" type="error" message="Não foi possível cadastrar o slot." />
-  <form class="slot-form" @submit="handleSubmit" novalidate>
+  <form class="forms__form" @submit="handleSubmit" novalidate>
     <AppSelect
       id="slot-speciality"
       label="Especialidade:"
@@ -99,23 +97,9 @@ onMounted(async () => {
 
     <div class="slot-form__dates">
       <p class="slot-form__dates-label">Horários disponíveis:</p>
-      <div
-        v-for="(entry, index) in dateEntries"
-        :key="index"
-        class="slot-form__date-row"
-      >
-        <AppInput
-          :id="`slot-date-${index}`"
-          label="Data:"
-          type="date"
-          v-model="entry.date"
-        />
-        <AppInput
-          :id="`slot-time-${index}`"
-          label="Horário:"
-          type="time"
-          v-model="entry.time"
-        />
+      <div v-for="(entry, index) in dateEntries" :key="index" class="slot-form__date-row">
+        <AppInput :id="`slot-date-${index}`" label="Data:" type="date" v-model="entry.date" />
+        <AppInput :id="`slot-time-${index}`" label="Horário:" type="time" v-model="entry.time" />
         <button
           v-if="dateEntries.length > 1"
           type="button"
@@ -138,12 +122,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.slot-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .slot-form__dates {
   display: flex;
   flex-direction: column;
