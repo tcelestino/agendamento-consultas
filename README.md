@@ -21,12 +21,21 @@ Sistema web para agendamento de consultas médicas com autenticação, integraç
 - JWT (access token)
 - Vitest (testes unitários e e2e)
 
+#### Dependencias externas
+
+- [Weather API](http://api.weatherapi.com)
+- [ViaCEP](https://viacep.com.br)
+
+Mais detalhes no [README.md](https://github.com/tcelestino/agendamento-consultas/blob/main/api/README.md) do projeto.
+
 ### Frontend (`frontend/`)
 
 - Vue 3 + TypeScript + Vite
 - Pinia (gerenciamento de estado)
 - Vue Router 5
 - Vitest + Vue Test Utils
+
+Mais detalhes no [README.md](https://github.com/tcelestino/agendamento-consultas/blob/main/frontend/README.md) do projeto.
 
 ### Infraestrutura
 
@@ -51,20 +60,20 @@ cp frontend/.env.example frontend/.env
 
 Variáveis necessárias na `api/.env`:
 
-| Variável | Descrição |
-|---|---|
-| `PORT` | Porta da API (padrão: `3000`) |
-| `API_PREFIX` | Prefixo das rotas (ex: `api`) |
-| `API_VERSION` | Versão da API (ex: `v1`) |
-| `DATABASE_URL` | URI de conexão com o MongoDB |
-| `MONGO_USERNAME` | Usuário do MongoDB |
-| `MONGO_PASSWORD` | Senha do MongoDB |
-| `MONGO_DATABASE` | Nome do banco de dados |
-| `VIACEP_API` | URL base da API ViaCEP |
-| `WEATHER_API` | URL base da WeatherAPI |
-| `WEATHER_API_KEY` | Chave de acesso à WeatherAPI |
-| `WEATHER_API_DAY` | Quantidade de dias para previsão |
-| `JWT_SECRET` | Secret para geração do access token |
+| Variável | Descrição | Valor padrão |
+|---|---|---|
+| `PORT` | Porta da API | 3000 |
+| `API_PREFIX` | Prefixo das rotas | api | 
+| `API_VERSION` | Versão da API | v1 |
+| `DATABASE_URL` | URI de conexão com o MongoDB | mongodb://admin:admin@localhost:27017/appointments_api?authSource=admin |
+| `MONGO_USERNAME` | Usuário do MongoDB | admin |
+| `MONGO_PASSWORD` | Senha do MongoDB | admin |
+| `MONGO_DATABASE` | Nome do banco de dados | appointments_api
+| `VIACEP_API` | URL base da API ViaCEP | https://viacep.com.br/ws | 
+| `WEATHER_API` | URL base da WeatherAPI | http://api.weatherapi.com | 
+| `WEATHER_API_KEY` | Chave de acesso à WeatherAPI.  | Gere um token no painel | 
+| `WEATHER_API_DAY` | Quantidade de dias para previsão | 1 | 
+| `JWT_SECRET` | Secret para geração do access token | seu-secret-para-access-token |
 
 Variáveis necessárias na `frontend/.env`:
 
@@ -79,7 +88,19 @@ cd api && npm install
 cd ../frontend && npm install
 ```
 
-### 3. Rodar em desenvolvimento
+
+### 3. MongoDB via Docker Compose
+
+```bash
+docker compose -f api/docker-compose.dependencies.yaml up -d
+```
+Serviço disponível após subir o container:
+
+| Serviço | Endereço |
+|---|---|
+| MongoDB | `localhost:27017` |
+
+### 4. Rodar aplicações
 
 ```bash
 # API (na pasta api/)
@@ -88,20 +109,6 @@ npm run dev
 # Frontend (na pasta frontend/)
 npm run dev
 ```
-
-## Execução com Docker
-
-```bash
-docker compose up
-```
-
-Serviços disponíveis após subir os containers:
-
-| Serviço | URL |
-|---|---|
-| Frontend | `http://localhost:5173` |
-| API | `http://localhost:3000` |
-| MongoDB | `localhost:27017` |
 
 ## Testes
 
