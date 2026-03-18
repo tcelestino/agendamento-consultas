@@ -34,8 +34,10 @@ const formFields = reactive({
     street: '',
     neighborhood: '',
     city: '',
-    state: '',
-    stateCode: '',
+    state: {
+      name: '',
+      code: '',
+    },
   },
   userType: 'user',
 })
@@ -66,8 +68,10 @@ async function onZipCodeBlur(zipCode: string) {
       street,
       neighborhood,
       city,
-      state,
-      stateCode,
+      state: {
+        name: state,
+        code: stateCode,
+      },
     }
   } catch (error) {
     hasError.value = { message: 'Erro ao buscar endereço', isVisible: true }
@@ -76,8 +80,10 @@ async function onZipCodeBlur(zipCode: string) {
       street: '',
       neighborhood: '',
       city: '',
-      state: '',
-      stateCode: '',
+      state: {
+        name: '',
+        code: '',
+      },
     }
     console.log(error)
   }
@@ -94,8 +100,10 @@ function toggleAddressFields(e: MouseEvent) {
       street: '',
       neighborhood: '',
       city: '',
-      state: '',
-      stateCode: '',
+      state: {
+        name: '',
+        code: '',
+      },
     }
   }
 
@@ -113,8 +121,8 @@ async function handleSubmit(e: SubmitEvent) {
     neighborhood: formFields.address.neighborhood,
     city: formFields.address.city,
     state: {
-      name: formFields.address.state,
-      code: formFields.address.stateCode,
+      name: formFields.address.state.name,
+      code: formFields.address.state.code,
     },
   }
 
@@ -165,7 +173,7 @@ async function handleSubmit(e: SubmitEvent) {
     :message="hasError.message"
   />
 
-  <form class="register-form__form" @submit="handleSubmit" novalidate>
+  <form class="forms__form" @submit="handleSubmit" novalidate>
     <AppInput
       id="name"
       label="Nome"
@@ -204,10 +212,10 @@ async function handleSubmit(e: SubmitEvent) {
           id="state"
           label="Estado:"
           type="text"
-          v-model="formFields.address.state"
+          v-model="formFields.address.state.name"
           disabled
         />
-        <AppInput id="stateCode" type="hidden" v-model="formFields.address.stateCode" />
+        <AppInput id="stateCode" type="hidden" v-model="formFields.address.state.code" />
       </div>
 
       <AppInput
@@ -249,12 +257,6 @@ async function handleSubmit(e: SubmitEvent) {
 </template>
 
 <style scoped>
-.register-form__form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .register-form__row {
   display: grid;
   grid-template-columns: 1fr 1fr;

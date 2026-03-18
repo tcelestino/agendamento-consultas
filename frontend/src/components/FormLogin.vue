@@ -66,58 +66,34 @@ async function handleSubmit(e: SubmitEvent) {
 <template>
   <Toast v-if="registerStore.isRegistered" type="success" message="Cadastro com sucesso!" />
   <Toast v-if="loginProcess.hasError" type="error" :message="loginProcess.message" />
-  <main class="login-form">
-    <h2 class="login-form__title">Entrar no sistema</h2>
+  <form class="forms__form" @submit="handleSubmit" novalidate>
+    <AppInput
+      id="email"
+      label="Email"
+      type="email"
+      placeholder="Digite seu email"
+      v-model="email"
+    />
+    <AppInput
+      id="password"
+      label="Senha"
+      type="password"
+      placeholder="Digite sua senha"
+      v-model="password"
+    />
 
-    <form class="login-form__form" @submit="handleSubmit" novalidate>
-      <AppInput
-        id="email"
-        label="Email"
-        type="email"
-        placeholder="Digite seu email"
-        v-model="email"
-      />
-      <AppInput
-        id="password"
-        label="Senha"
-        type="password"
-        placeholder="Digite sua senha"
-        v-model="password"
-      />
+    <AppButton type="submit">Entrar</AppButton>
+  </form>
 
-      <AppButton type="submit">Entrar</AppButton>
-    </form>
-
-    <div class="login-form__links">
-      <!-- TODO: implementar reset de senha -->
-      <!-- <RouterLink to="/resetar-senha" class="login-form__link">Esqueci a senha</RouterLink> -->
-      <p class="login-form__register">
-        Não tem cadastro?
-        <RouterLink to="/cadastro" class="login-form__link">Criar uma nova conta</RouterLink>
-      </p>
-    </div>
-  </main>
+  <div class="login-form__links">
+    <p class="login-form__register">
+      Não tem cadastro?
+      <RouterLink to="/cadastro" class="login-form__link">Criar uma nova conta</RouterLink>
+    </p>
+  </div>
 </template>
 
 <style scoped>
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.login-form__title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-text);
-}
-
-.login-form__form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .login-form__links {
   display: flex;
   flex-direction: column;

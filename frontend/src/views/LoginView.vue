@@ -3,5 +3,8 @@ import FormLogin from '@/components/FormLogin.vue'
 </script>
 
 <template>
-  <FormLogin />
+  <div class="page-container">
+    <h2 class="page-container__title">Entrar no sistema</h2>
+    <FormLogin />
+  </div>
 </template>
