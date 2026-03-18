@@ -23,7 +23,6 @@ export class UserService {
     const dataCloned = { ...data }
     dataCloned.id = uuid()
     dataCloned.pass = await this.hashPassword(data.pass)
-    dataCloned.status = data.type === USER_TYPE.USER ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE
 
     await this.userRepository.create(dataCloned)
   }

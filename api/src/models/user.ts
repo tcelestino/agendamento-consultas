@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, index: true, unique: true },
   pass: { type: String, required: true },
   type: { type: String, required: true },
-  status: { type: String, default: USER_STATUS.INACTIVE },
+  status: { type: String, default: USER_STATUS.ACTIVE },
   address: {
     type: {
       zipCode: { type: String, required: true },
