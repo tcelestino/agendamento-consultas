@@ -56,6 +56,8 @@ async function handleSubmit(e: SubmitEvent) {
 
     router.push('/dashboard')
   } catch (error) {
+    loginProcess.value.hasError = true
+    loginProcess.value.message = 'Ocorreu um erro. Tente novamente'
     console.error(error)
   }
 }
