@@ -77,10 +77,22 @@ async function onZipCodeBlur() {
     const addressData = await getAddress(zipCode)
     if (!addressData) return
     const { street, neighborhood, city, state, stateCode } = addressData
-    formFields.address = { zipCode, street, neighborhood, city, state: { name: state, code: stateCode } }
+    formFields.address = {
+      zipCode,
+      street,
+      neighborhood,
+      city,
+      state: { name: state, code: stateCode },
+    }
   } catch (error) {
     hasError.value = { message: 'Erro ao buscar endereço', isVisible: true }
-    formFields.address = { zipCode: '', street: '', neighborhood: '', city: '', state: { name: '', code: '' } }
+    formFields.address = {
+      zipCode: '',
+      street: '',
+      neighborhood: '',
+      city: '',
+      state: { name: '', code: '' },
+    }
     console.log(error)
   }
 }
@@ -90,7 +102,13 @@ function toggleAddressFields(e: MouseEvent) {
   textRegister.value = showAddressFields.value ? 'Sou um funcionário' : 'Sou um paciente'
   formFields.userType = showAddressFields.value ? 'user' : 'employee'
   if (showAddressFields.value) {
-    formFields.address = { zipCode: '', street: '', neighborhood: '', city: '', state: { name: '', code: '' } }
+    formFields.address = {
+      zipCode: '',
+      street: '',
+      neighborhood: '',
+      city: '',
+      state: { name: '', code: '' },
+    }
   }
   e.preventDefault()
 }
@@ -232,7 +250,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Toast v-if="hasError.isVisible" :key="hasError.message" type="error" :message="hasError.message" />
+  <Toast
+    v-if="hasError.isVisible"
+    :key="hasError.message"
+    type="error"
+    :message="hasError.message"
+  />
   <Toast v-if="showSuccess" type="success" message="Salvo com sucesso" />
 
   <p v-if="!isRegister && !userFound">Usuário não encontrado</p>
@@ -276,14 +299,32 @@ onMounted(async () => {
           :disabled="isFieldDisabled"
           @blur="onZipCodeBlur"
         />
-        <AppInput id="state" label="Estado:" type="text" v-model="formFields.address.state.name" disabled />
+        <AppInput
+          id="state"
+          label="Estado:"
+          type="text"
+          v-model="formFields.address.state.name"
+          disabled
+        />
         <AppInput id="stateCode" type="hidden" v-model="formFields.address.state.code" />
       </div>
 
-      <AppInput id="street" label="Endereço:" type="text" v-model="formFields.address.street" disabled />
+      <AppInput
+        id="street"
+        label="Endereço:"
+        type="text"
+        v-model="formFields.address.street"
+        disabled
+      />
 
       <div class="user-form__row">
-        <AppInput id="city" label="Cidade:" type="text" v-model="formFields.address.city" disabled />
+        <AppInput
+          id="city"
+          label="Cidade:"
+          type="text"
+          v-model="formFields.address.city"
+          disabled
+        />
         <AppInput
           id="neighborhood"
           label="Bairro:"
@@ -296,10 +337,10 @@ onMounted(async () => {
 
     <template v-if="!isRegister">
       <AppButton v-if="!editing" type="button" @click="onEdit">Editar</AppButton>
-      <AppButton v-else type="submit">Salvar</AppButton>
+      <AppButton v-else type="submit" :disabled="hasError.isVisible">Salvar</AppButton>
     </template>
     <template v-else>
-      <AppButton type="submit">Cadastrar</AppButton>
+      <AppButton type="submit" :disabled="hasError.isVisible">Cadastrar</AppButton>
     </template>
   </form>
 
