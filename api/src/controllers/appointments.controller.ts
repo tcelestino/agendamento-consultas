@@ -11,8 +11,11 @@ export class AppointmentsController {
   }
 
   async save(req: Request, res: Response) {
-    const { slotId, availableDateId } = req.body
-    const userId = req.userId
+    const { slotId, availableDateId, userId: bodyUserId } = req.body
+    const authUserId = req.userId
+    const userType = req.userType
+
+    const userId = userType === USER_TYPE.EMPLOYEE && bodyUserId ? bodyUserId : authUserId
 
     if (!userId) {
       return res.status(401).json({ error: 'Usuário não autorizado' })
