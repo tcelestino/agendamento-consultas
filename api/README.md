@@ -127,7 +127,6 @@ curl http://localhost:3000/api/v1/users/me \
 | `GET` | `/appointments` | employee | Lista todos os agendamentos |
 | `GET` | `/appointments/:userId` | sim | Lista agendamentos por usuário |
 | `DELETE` | `/appointments/:id` | sim | Deleta um agendamento |
-| `PATCH` | `/appointments/:id/cancel` | sim | Cancela um agendamento |
 
 **Criar agendamento**
 
@@ -141,17 +140,17 @@ curl -X POST http://localhost:3000/api/v1/appointments \
   }'
 ```
 
-**Listar agendamentos por usuário**
+**Listar agendamentos por usuário** _(apenas funcionário)_
 
 ```bash
 curl http://localhost:3000/api/v1/appointments/<userId> \
   -H 'Authorization: Bearer seu-access-token'
 ```
 
-**Cancelar agendamento**
+**Deleta agendamento** _(apenas funcionário)_
 
 ```bash
-curl -X PATCH http://localhost:3000/api/v1/appointments/<id>/cancel \
+curl -X DELETE 'http://localhost:3000/api/v1/appointments/<appointmentId>?availableDateId=<availableDateId>' \
   -H 'Authorization: Bearer seu-access-token'
 ```
 
@@ -172,7 +171,7 @@ curl http://localhost:3000/api/v1/specialities \
   -H 'Authorization: Bearer seu-access-token'
 ```
 
-**Criar especialidade** _(requer funcionário)_
+**Criar especialidade** _(apenas funcionário)_
 
 ```bash
 curl -X POST http://localhost:3000/api/v1/specialities \
@@ -360,13 +359,3 @@ As rotas são protegidas por dois middlewares:
 - **`accessMiddleware(USER_TYPE.EMPLOYEE)`** — restringe a rota a funcionários
 
 Tipos de usuário: `user` (paciente) e `employee` (funcionário).
-
-## Padrão de Repositórios HTTP
-
-Repositórios que consomem APIs externas recebem `AxiosInstance` no constructor. O service cria uma instância compartilhada via `axios.create()` e a injeta no repositório:
-
-```ts
-const httpClient = axios.create()
-export const addressService = new AddressService(new AddressRepository(httpClient))
-export const weatherService = new WeatherService(new WeatherRepository(httpClient))
-```
