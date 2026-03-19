@@ -20,22 +20,21 @@ vi.mock('../../../src/infra/logs', () => ({
   logger: { error: vi.fn() },
 }))
 
-const mockUser = {
-  id: 'user-1',
-  name: 'John Doe',
-  email: 'john@example.com',
-  pass: 'hashed-pass',
-  type: 'user' as const,
-}
-
-const mockUserPublic = {
-  id: 'user-1',
-  name: 'John Doe',
-  email: 'john@example.com',
-  userType: 'user' as const,
-}
-
 describe('UserRepository', () => {
+  const mockUser = {
+    id: 'user-1',
+    name: 'John Doe',
+    email: 'john@example.com',
+    pass: 'hashed-pass',
+    type: 'user' as const,
+  }
+
+  const mockUserPublic = {
+    id: 'user-1',
+    name: 'John Doe',
+    email: 'john@example.com',
+    userType: 'user' as const,
+  }
   let repository: UserRepository
 
   beforeEach(() => {

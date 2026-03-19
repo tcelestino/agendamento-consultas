@@ -3,19 +3,19 @@ import { AuthService, UserService } from '../../../src/services'
 
 process.env.JWT_SECRET = 'test-secret'
 
-const makeUserService = () =>
-  ({
-    findByEmail: vi.fn(),
-    findById: vi.fn(),
-    findAll: vi.fn(),
-    create: vi.fn(),
-    update: vi.fn(),
-    delete: vi.fn(),
-  }) as unknown as UserService
-
-const privateUser = { id: 'user-1', pass: 'hashed-pass', type: 'user' as const }
-
 describe('AuthService', () => {
+  const makeUserService = () =>
+    ({
+      findByEmail: vi.fn(),
+      findById: vi.fn(),
+      findAll: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    }) as unknown as UserService
+
+  const privateUser = { id: 'user-1', pass: 'hashed-pass', type: 'user' as const }
+
   let userService: UserService
   let service: AuthService
 

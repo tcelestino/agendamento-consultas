@@ -6,23 +6,23 @@ vi.mock('../../../src/infra/logs', () => ({
   logger: { error: vi.fn() },
 }))
 
-const mockViaCEPResponse = {
-  cep: '01310-100',
-  logradouro: 'Avenida Paulista',
-  complemento: '',
-  unidade: '',
-  bairro: 'Bela Vista',
-  localidade: 'São Paulo',
-  uf: 'SP',
-  estado: 'São Paulo',
-  regiao: 'Sudeste',
-  ibge: '3550308',
-  gia: '1004',
-  ddd: '11',
-  siafi: '7107',
-}
-
 describe('AddressRepository', () => {
+  const mockViaCEPResponse = {
+    cep: '01310-100',
+    logradouro: 'Avenida Paulista',
+    complemento: '',
+    unidade: '',
+    bairro: 'Bela Vista',
+    localidade: 'São Paulo',
+    uf: 'SP',
+    estado: 'São Paulo',
+    regiao: 'Sudeste',
+    ibge: '3550308',
+    gia: '1004',
+    ddd: '11',
+    siafi: '7107',
+  }
+
   let repository: AddressRepository
   let mockHttpClient: { get: ReturnType<typeof vi.fn> }
 

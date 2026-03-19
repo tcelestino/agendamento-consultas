@@ -52,28 +52,31 @@ vi.mock('../../src/services/weather.service', () => ({
   WeatherService: vi.fn(),
 }))
 
-const BASE = '/api/v1'
-
-const mockSlot = {
-  id: 'slot-1',
-  specialityId: 'type-1',
-  doctorName: 'Dr. House',
-  availableDate: [{ id: 'date-1', date: '2026-03-10', time: '09:00', isBooked: false }],
-  createdAt: new Date().toISOString(),
-}
-
-const newSlotBody = {
-  specialityId: 'type-1',
-  doctorName: 'Dr. House',
-  availableDate: [{ date: '2026-03-10', time: '09:00' }],
-}
-
-beforeEach(() => {
-  vi.clearAllMocks()
-  vi.mocked(authService.verifyAccessToken).mockReturnValue({ sub: 'user-1', userType: 'employee' })
-})
-
 describe('SlotsController', () => {
+  const BASE = '/api/v1'
+
+  const mockSlot = {
+    id: 'slot-1',
+    specialityId: 'type-1',
+    doctorName: 'Dr. House',
+    availableDate: [{ id: 'date-1', date: '2026-03-10', time: '09:00', isBooked: false }],
+    createdAt: new Date().toISOString(),
+  }
+
+  const newSlotBody = {
+    specialityId: 'type-1',
+    doctorName: 'Dr. House',
+    availableDate: [{ date: '2026-03-10', time: '09:00' }],
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(authService.verifyAccessToken).mockReturnValue({
+      sub: 'user-1',
+      userType: 'employee',
+    })
+  })
+
   describe('GET /slots', () => {
     it('returns 401 when no token is provided', async () => {
       const res = await request(app).get(`${BASE}/slots`)

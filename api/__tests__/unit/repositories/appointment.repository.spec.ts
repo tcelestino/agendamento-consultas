@@ -21,17 +21,17 @@ vi.mock('../../../src/infra/logs', () => ({
   logger: { error: vi.fn() },
 }))
 
-const mockAppointmentData = {
-  id: 'apt-1',
-  status: 'scheduled',
-  dateAppointment: { id: 'date-1', date: '2026-03-10', time: '10:00' },
-  doctor: { id: 'doc-1', name: 'Dr. Smith' },
-  userId: 'user-1',
-  speciality: { id: 'type-1', name: 'General' },
-  slotId: 'slot-1',
-}
-
 describe('AppointmentRepository', () => {
+  const mockAppointmentData = {
+    id: 'apt-1',
+    status: 'scheduled',
+    dateAppointment: { id: 'date-1', date: '2026-03-10', time: '10:00' },
+    doctor: { id: 'doc-1', name: 'Dr. Smith' },
+    userId: 'user-1',
+    speciality: { id: 'type-1', name: 'General' },
+    slotId: 'slot-1',
+  }
+
   let repository: AppointmentRepository
 
   beforeEach(() => {

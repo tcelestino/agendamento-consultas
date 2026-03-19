@@ -2,20 +2,20 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { SpecialityService } from '../../../src/services'
 import { ISpecialityRepository, ISpecialityData } from '../../../src/repositories'
 
-const makeRepository = (): ISpecialityRepository => ({
-  findAll: vi.fn(),
-  create: vi.fn(),
-  findById: vi.fn(),
-  findByName: vi.fn(),
-})
-
-const baseType: ISpecialityData = {
-  id: 'type-1',
-  name: 'Cardiologia',
-  createdAt: new Date(),
-}
-
 describe('SpecialityService', () => {
+  const makeRepository = (): ISpecialityRepository => ({
+    findAll: vi.fn(),
+    create: vi.fn(),
+    findById: vi.fn(),
+    findByName: vi.fn(),
+    delete: vi.fn(),
+  })
+
+  const baseType: ISpecialityData = {
+    id: 'type-1',
+    name: 'Cardiologia',
+    createdAt: new Date(),
+  }
   let repository: ISpecialityRepository
   let service: SpecialityService
 

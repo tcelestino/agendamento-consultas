@@ -26,51 +26,50 @@ vi.mock('../../src/services/user.service', () => ({
   UserService: vi.fn(),
 }))
 
-const BASE = '/api/v1'
-const USER_TOKEN = 'user-token'
-const EMPLOYEE_TOKEN = 'employee-token'
-
-const userAuth = { Authorization: `Bearer ${USER_TOKEN}` }
-const employeeAuth = { Authorization: `Bearer ${EMPLOYEE_TOKEN}` }
-
-const mockUser = {
-  id: 'user-1',
-  name: 'Alice',
-  email: 'alice@example.com',
-  type: 'user',
-  address: {
-    zipCode: '01310-100',
-    street: 'Av. Paulista',
-    neighborhood: 'Bela Vista',
-    city: 'São Paulo',
-    state: { name: 'São Paulo', code: 'SP' },
-  },
-}
-
-const newUserBody = {
-  name: 'Alice',
-  email: 'alice@example.com',
-  pass: 'secret123',
-  type: 'user',
-  address: {
-    zipCode: '01310-100',
-    street: 'Av. Paulista',
-    neighborhood: 'Bela Vista',
-    city: 'São Paulo',
-    state: { name: 'São Paulo', code: 'SP' },
-  },
-}
-
-beforeEach(() => {
-  vi.clearAllMocks()
-  vi.mocked(authService.verifyAccessToken).mockImplementation((token: string) => {
-    if (token === USER_TOKEN) return { sub: 'user-1', userType: 'user' }
-    if (token === EMPLOYEE_TOKEN) return { sub: 'employee-1', userType: 'employee' }
-    throw new Error('Token inválido')
-  })
-})
-
 describe('UsersController', () => {
+  const BASE = '/api/v1'
+  const USER_TOKEN = 'user-token'
+  const EMPLOYEE_TOKEN = 'employee-token'
+
+  const userAuth = { Authorization: `Bearer ${USER_TOKEN}` }
+  const employeeAuth = { Authorization: `Bearer ${EMPLOYEE_TOKEN}` }
+
+  const mockUser = {
+    id: 'user-1',
+    name: 'Alice',
+    email: 'alice@example.com',
+    type: 'user',
+    address: {
+      zipCode: '01310-100',
+      street: 'Av. Paulista',
+      neighborhood: 'Bela Vista',
+      city: 'São Paulo',
+      state: { name: 'São Paulo', code: 'SP' },
+    },
+  }
+
+  const newUserBody = {
+    name: 'Alice',
+    email: 'alice@example.com',
+    pass: 'secret123',
+    type: 'user',
+    address: {
+      zipCode: '01310-100',
+      street: 'Av. Paulista',
+      neighborhood: 'Bela Vista',
+      city: 'São Paulo',
+      state: { name: 'São Paulo', code: 'SP' },
+    },
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(authService.verifyAccessToken).mockImplementation((token: string) => {
+      if (token === USER_TOKEN) return { sub: 'user-1', userType: 'user' }
+      if (token === EMPLOYEE_TOKEN) return { sub: 'employee-1', userType: 'employee' }
+      throw new Error('Token inválido')
+    })
+  })
   describe('POST /users', () => {
     it('returns 201 on successful user creation', async () => {
       vi.mocked(userService.create).mockResolvedValue()

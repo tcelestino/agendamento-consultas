@@ -49,29 +49,28 @@ vi.mock('../../src/services/weather.service', () => ({
   WeatherService: vi.fn(),
 }))
 
-const BASE = '/api/v1'
-
-const mockAddress = {
-  street: 'Av. Paulista',
-  neighborhood: 'Bela Vista',
-  stateCode: 'SP',
-  state: 'São Paulo',
-  zipCode: '01310-100',
-  city: 'São Paulo',
-}
-
-const mockWeather = {
-  maxTemp: 28,
-  minTemp: 18,
-  condition: { text: 'Sunny', icon: '//cdn.icon.png' },
-}
-
-beforeEach(() => {
-  vi.clearAllMocks()
-  vi.mocked(authService.verifyAccessToken).mockReturnValue({ sub: 'user-1', userType: 'user' })
-})
-
 describe('InfosController', () => {
+  const BASE = '/api/v1'
+
+  const mockAddress = {
+    street: 'Av. Paulista',
+    neighborhood: 'Bela Vista',
+    stateCode: 'SP',
+    state: 'São Paulo',
+    zipCode: '01310-100',
+    city: 'São Paulo',
+  }
+
+  const mockWeather = {
+    maxTemp: 28,
+    minTemp: 18,
+    condition: { text: 'Sunny', icon: '//cdn.icon.png' },
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(authService.verifyAccessToken).mockReturnValue({ sub: 'user-1', userType: 'user' })
+  })
   describe('GET /infos/address/:zipCode', () => {
     it('returns 200 with address data', async () => {
       vi.mocked(addressService.getAddressByZipCode).mockResolvedValue(mockAddress)

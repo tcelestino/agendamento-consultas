@@ -24,28 +24,28 @@ vi.mock('../../../src/infra/logs', () => ({
   logger: { error: vi.fn() },
 }))
 
-const mockAvailableDate = {
-  id: 'date-1',
-  date: '2026-03-10',
-  time: '10:00',
-  isBooked: false,
-  appointmentId: null,
-}
+describe('SlotRepository', () => {
+  const mockAvailableDate = {
+    id: 'date-1',
+    date: '2026-03-10',
+    time: '10:00',
+    isBooked: false,
+    appointmentId: null,
+  }
 
-const mockSlotDoc = {
-  id: 'slot-1',
-  consultationTypeId: 'type-1',
-  doctor: { id: 'doc-1', name: 'Dr. Smith' },
-  availableDate: [{ ...mockAvailableDate, _id: 'mongo-id' }],
-  createdAt: new Date(),
-}
+  const mockSlotDoc = {
+    id: 'slot-1',
+    consultationTypeId: 'type-1',
+    doctor: { id: 'doc-1', name: 'Dr. Smith' },
+    availableDate: [{ ...mockAvailableDate, _id: 'mongo-id' }],
+    createdAt: new Date(),
+  }
 
-const mockSlotResult = {
-  ...mockSlotDoc,
-  availableDate: [mockAvailableDate],
-}
+  const mockSlotResult = {
+    ...mockSlotDoc,
+    availableDate: [mockAvailableDate],
+  }
 
-describe('ConsultationSlotRepository', () => {
   let repository: SlotRepository
 
   beforeEach(() => {

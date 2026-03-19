@@ -46,34 +46,34 @@ vi.mock('../../src/services/info.service', () => ({
   InfoService: vi.fn(),
 }))
 
-const BASE = '/api/v1'
-
-const USER_TOKEN = 'user-token'
-const EMPLOYEE_TOKEN = 'employee-token'
-
-const userAuth = { Authorization: `Bearer ${USER_TOKEN}` }
-const employeeAuth = { Authorization: `Bearer ${EMPLOYEE_TOKEN}` }
-
-const mockAppointment = {
-  id: 'appt-1',
-  userId: 'user-1',
-  slotId: 'slot-1',
-  status: 'confirmed',
-  dateAppointment: { id: 'date-1', date: '2026-03-10', time: '09:00' },
-  doctor: { id: 'doctor-1', name: 'Dr. House' },
-  speciality: 'Cardiologia',
-}
-
-beforeEach(() => {
-  vi.clearAllMocks()
-  vi.mocked(authService.verifyAccessToken).mockImplementation((token: string) => {
-    if (token === USER_TOKEN) return { sub: 'user-1', userType: 'user' }
-    if (token === EMPLOYEE_TOKEN) return { sub: 'employee-1', userType: 'employee' }
-    throw new Error('Token inválido')
-  })
-})
-
 describe('AppointmentsController', () => {
+  const BASE = '/api/v1'
+
+  const USER_TOKEN = 'user-token'
+  const EMPLOYEE_TOKEN = 'employee-token'
+
+  const userAuth = { Authorization: `Bearer ${USER_TOKEN}` }
+  const employeeAuth = { Authorization: `Bearer ${EMPLOYEE_TOKEN}` }
+
+  const mockAppointment = {
+    id: 'appt-1',
+    userId: 'user-1',
+    slotId: 'slot-1',
+    status: 'confirmed',
+    dateAppointment: { id: 'date-1', date: '2026-03-10', time: '09:00' },
+    doctor: { id: 'doctor-1', name: 'Dr. House' },
+    speciality: 'Cardiologia',
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(authService.verifyAccessToken).mockImplementation((token: string) => {
+      if (token === USER_TOKEN) return { sub: 'user-1', userType: 'user' }
+      if (token === EMPLOYEE_TOKEN) return { sub: 'employee-1', userType: 'employee' }
+      throw new Error('Token inválido')
+    })
+  })
+
   describe('POST /appointments', () => {
     it('returns 401 when no auth token is provided', async () => {
       const res = await request(app).post(`${BASE}/appointments`).send({

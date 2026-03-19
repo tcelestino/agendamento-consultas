@@ -3,31 +3,30 @@ import { UserService } from '../../../src/services'
 import { IUserRepository, IUserPublic, IUserPrivate } from '../../../src/repositories'
 import { USER_STATUS, USER_TYPE } from '../../../src/models'
 
-const makeRepository = (): IUserRepository => ({
-  create: vi.fn(),
-  findAll: vi.fn(),
-  findById: vi.fn(),
-  findByEmail: vi.fn(),
-  update: vi.fn(),
-  delete: vi.fn(),
-})
-
-const baseUser = {
-  id: 'any-id',
-  name: 'John Doe',
-  email: 'john@example.com',
-  pass: 'secret123',
-  type: USER_TYPE.USER as typeof USER_TYPE.USER,
-  address: {
-    zipCode: '01310-100',
-    street: 'Av. Paulista',
-    neighborhood: 'Bela Vista',
-    city: 'São Paulo',
-    state: { name: 'São Paulo', code: 'SP' },
-  },
-}
-
 describe('UserService', () => {
+  const makeRepository = (): IUserRepository => ({
+    create: vi.fn(),
+    findAll: vi.fn(),
+    findById: vi.fn(),
+    findByEmail: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
+  })
+
+  const baseUser = {
+    id: 'any-id',
+    name: 'John Doe',
+    email: 'john@example.com',
+    pass: 'secret123',
+    type: USER_TYPE.USER as typeof USER_TYPE.USER,
+    address: {
+      zipCode: '01310-100',
+      street: 'Av. Paulista',
+      neighborhood: 'Bela Vista',
+      city: 'São Paulo',
+      state: { name: 'São Paulo', code: 'SP' },
+    },
+  }
   let repository: IUserRepository
   let service: UserService
 

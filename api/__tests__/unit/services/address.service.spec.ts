@@ -2,27 +2,26 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AddressService } from '../../../src/services'
 import { IAddressRepository, ViaCEPResponse } from '../../../src/repositories'
 
-const makeAddressRepo = (): IAddressRepository<ViaCEPResponse> => ({
-  getAddressByZipCode: vi.fn(),
-})
-
-const viaCEPResponse: ViaCEPResponse = {
-  cep: '01310-100',
-  logradouro: 'Avenida Paulista',
-  complemento: '',
-  unidade: '',
-  bairro: 'Bela Vista',
-  localidade: 'São Paulo',
-  uf: 'SP',
-  estado: 'São Paulo',
-  regiao: 'Sudeste',
-  ibge: '3550308',
-  gia: '1004',
-  ddd: '11',
-  siafi: '7107',
-}
-
 describe('AddressService', () => {
+  const makeAddressRepo = (): IAddressRepository<ViaCEPResponse> => ({
+    getAddressByZipCode: vi.fn(),
+  })
+
+  const viaCEPResponse: ViaCEPResponse = {
+    cep: '01310-100',
+    logradouro: 'Avenida Paulista',
+    complemento: '',
+    unidade: '',
+    bairro: 'Bela Vista',
+    localidade: 'São Paulo',
+    uf: 'SP',
+    estado: 'São Paulo',
+    regiao: 'Sudeste',
+    ibge: '3550308',
+    gia: '1004',
+    ddd: '11',
+    siafi: '7107',
+  }
   let addressRepo: IAddressRepository<ViaCEPResponse>
   let service: AddressService
 

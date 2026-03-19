@@ -18,9 +18,9 @@ vi.mock('../../../src/infra/logs', () => ({
   logger: { error: vi.fn() },
 }))
 
-const mockType = { id: 'type-1', name: 'General', createdAt: new Date() }
-
 describe('SpecialityRepository', () => {
+  const mockType = { id: 'type-1', name: 'General', createdAt: new Date() }
+
   let repository: SpecialityRepository
 
   beforeEach(() => {

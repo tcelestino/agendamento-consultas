@@ -8,82 +8,81 @@ import {
   WeatherService,
 } from '../../../src/services'
 
-const makeAppointmentRepo = (): IAppointmentRepository => ({
-  create: vi.fn(),
-  findAll: vi.fn(),
-  findByUserId: vi.fn(),
-  findById: vi.fn(),
-  deleteById: vi.fn(),
-})
-
-const makeSpecialityService = (): SpecialityService =>
-  ({
-    create: vi.fn(),
-    listAll: vi.fn(),
-    findById: vi.fn(),
-    delete: vi.fn(),
-  }) as unknown as SpecialityService
-
-const makeSlotService = (): SlotService =>
-  ({
-    findById: vi.fn(),
-    bookSlot: vi.fn(),
-    releaseSlot: vi.fn(),
-    listAll: vi.fn(),
-    listAvailable: vi.fn(),
-    create: vi.fn(),
-  }) as unknown as SlotService
-
-const makeUserService = (): UserService =>
-  ({
-    findById: vi.fn(),
-    findAll: vi.fn(),
-    findByEmail: vi.fn(),
-    create: vi.fn(),
-    update: vi.fn(),
-    delete: vi.fn(),
-    comparePassword: vi.fn(),
-  }) as unknown as UserService
-
-const makeWeatherService = () =>
-  ({
-    getWeatherByCity: vi.fn(),
-  }) as unknown as WeatherService
-
-const baseUser = {
-  id: 'user-1',
-  name: 'Alice',
-  email: 'alice@example.com',
-  type: 'user' as const,
-}
-
-const baseSlot = {
-  id: 'slot-1',
-  specialityId: 'type-1',
-  doctorName: 'Dr. House',
-  availableDate: [],
-  createdAt: new Date(),
-}
-
-const baseType = { id: 'type-1', name: 'Cardiologia', createdAt: new Date() }
-
-const bookedSlot = {
-  id: 'slot-1',
-  specialityId: 'type-1',
-  doctor: { id: 'doctor-1', name: 'Dr. House' },
-  availableDate: [
-    {
-      id: 'date-1',
-      date: '2026-03-10',
-      time: '09:00',
-      isBooked: true,
-      appointmentId: 'PLACEHOLDER',
-    },
-  ],
-  createdAt: new Date(),
-}
-
 describe('AppointmentService', () => {
+  const makeAppointmentRepo = (): IAppointmentRepository => ({
+    create: vi.fn(),
+    findAll: vi.fn(),
+    findByUserId: vi.fn(),
+    findById: vi.fn(),
+    deleteById: vi.fn(),
+  })
+
+  const makeSpecialityService = (): SpecialityService =>
+    ({
+      create: vi.fn(),
+      listAll: vi.fn(),
+      findById: vi.fn(),
+      delete: vi.fn(),
+    }) as unknown as SpecialityService
+
+  const makeSlotService = (): SlotService =>
+    ({
+      findById: vi.fn(),
+      bookSlot: vi.fn(),
+      releaseSlot: vi.fn(),
+      listAll: vi.fn(),
+      listAvailable: vi.fn(),
+      create: vi.fn(),
+    }) as unknown as SlotService
+
+  const makeUserService = (): UserService =>
+    ({
+      findById: vi.fn(),
+      findAll: vi.fn(),
+      findByEmail: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+      comparePassword: vi.fn(),
+    }) as unknown as UserService
+
+  const makeWeatherService = () =>
+    ({
+      getWeatherByCity: vi.fn(),
+    }) as unknown as WeatherService
+
+  const baseUser = {
+    id: 'user-1',
+    name: 'Alice',
+    email: 'alice@example.com',
+    type: 'user' as const,
+  }
+
+  const baseSlot = {
+    id: 'slot-1',
+    specialityId: 'type-1',
+    doctorName: 'Dr. House',
+    availableDate: [],
+    createdAt: new Date(),
+  }
+
+  const baseType = { id: 'type-1', name: 'Cardiologia', createdAt: new Date() }
+
+  const bookedSlot = {
+    id: 'slot-1',
+    specialityId: 'type-1',
+    doctor: { id: 'doctor-1', name: 'Dr. House' },
+    availableDate: [
+      {
+        id: 'date-1',
+        date: '2026-03-10',
+        time: '09:00',
+        isBooked: true,
+        appointmentId: 'PLACEHOLDER',
+      },
+    ],
+    createdAt: new Date(),
+  }
   let repo: IAppointmentRepository
   let specialityService: SpecialityService
   let slotService: SlotService

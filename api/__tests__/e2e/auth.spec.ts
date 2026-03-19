@@ -37,13 +37,13 @@ vi.mock('../../src/services/info.service', () => ({
   InfoService: vi.fn(),
 }))
 
-const BASE = '/api/v1'
-
-beforeEach(() => {
-  vi.clearAllMocks()
-})
-
 describe('AuthController', () => {
+  const BASE = '/api/v1'
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   describe('POST /auth/login', () => {
     it('returns 400 when email or pass are missing', async () => {
       const res = await request(app).post(`${BASE}/auth/login`).send({ email: 'a@b.com' })

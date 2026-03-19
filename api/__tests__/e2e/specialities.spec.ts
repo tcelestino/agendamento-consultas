@@ -50,16 +50,18 @@ vi.mock('../../src/services/weather.service', () => ({
   WeatherService: vi.fn(),
 }))
 
-const BASE = '/api/v1'
-
-const mockType = { id: 'type-1', name: 'Cardiologia', createdAt: new Date().toISOString() }
-
-beforeEach(() => {
-  vi.clearAllMocks()
-  vi.mocked(authService.verifyAccessToken).mockReturnValue({ sub: 'user-1', userType: 'employee' })
-})
-
 describe('SpecialitiesController', () => {
+  const BASE = '/api/v1'
+
+  const mockType = { id: 'type-1', name: 'Cardiologia', createdAt: new Date().toISOString() }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(authService.verifyAccessToken).mockReturnValue({
+      sub: 'user-1',
+      userType: 'employee',
+    })
+  })
   describe('GET /specialities', () => {
     it('returns 401 when no token is provided', async () => {
       const res = await request(app).get(`${BASE}/specialities`)

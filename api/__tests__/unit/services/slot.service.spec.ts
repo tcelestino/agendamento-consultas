@@ -8,49 +8,49 @@ import {
   ISpecialityData,
 } from '../../../src/repositories'
 
-const makeSlotRepo = (): ISlotRepository => ({
-  create: vi.fn(),
-  findAll: vi.fn(),
-  findAvailable: vi.fn(),
-  findById: vi.fn(),
-  bookSlot: vi.fn(),
-  releaseSlot: vi.fn(),
-})
+describe('SlotService', () => {
+  const makeSlotRepo = (): ISlotRepository => ({
+    create: vi.fn(),
+    findAll: vi.fn(),
+    findAvailable: vi.fn(),
+    findById: vi.fn(),
+    bookSlot: vi.fn(),
+    releaseSlot: vi.fn(),
+  })
 
-const makeTypeRepo = (): ISpecialityRepository => ({
-  findAll: vi.fn(),
-  findById: vi.fn(),
-  findByName: vi.fn(),
-  create: vi.fn(),
-})
+  const makeTypeRepo = (): ISpecialityRepository => ({
+    findAll: vi.fn(),
+    findById: vi.fn(),
+    findByName: vi.fn(),
+    create: vi.fn(),
+    delete: vi.fn(),
+  })
 
-const baseType: ISpecialityData = {
-  id: 'type-1',
-  name: 'Cardiologia',
-  createdAt: new Date(),
-}
+  const baseType: ISpecialityData = {
+    id: 'type-1',
+    name: 'Cardiologia',
+    createdAt: new Date(),
+  }
 
-const baseSlot: ISlotData = {
-  id: 'slot-1',
-  specialityId: 'type-1',
-  doctorName: 'Dr. House',
-  availableDate: [
-    { id: 'date-1', date: '2026-03-10', time: '09:00', isBooked: false, appointmentId: null },
-  ],
-  createdAt: new Date(),
-}
+  const baseSlot: ISlotData = {
+    id: 'slot-1',
+    specialityId: 'type-1',
+    doctorName: 'Dr. House',
+    availableDate: [
+      { id: 'date-1', date: '2026-03-10', time: '09:00', isBooked: false, appointmentId: null },
+    ],
+    createdAt: new Date(),
+  }
 
-const bookedSlot: ISlotBooked = {
-  id: 'slot-1',
-  specialityId: 'type-1',
-  doctor: { id: 'doctor-1', name: 'Dr. House' },
-  availableDate: [
-    { id: 'date-1', date: '2026-03-10', time: '09:00', isBooked: true, appointmentId: 'appt-1' },
-  ],
-  createdAt: new Date(),
-}
-
-describe('ConsultationSlotService', () => {
+  const bookedSlot: ISlotBooked = {
+    id: 'slot-1',
+    specialityId: 'type-1',
+    doctor: { id: 'doctor-1', name: 'Dr. House' },
+    availableDate: [
+      { id: 'date-1', date: '2026-03-10', time: '09:00', isBooked: true, appointmentId: 'appt-1' },
+    ],
+    createdAt: new Date(),
+  }
   let slotRepo: ISlotRepository
   let typeRepo: ISpecialityRepository
   let service: SlotService
