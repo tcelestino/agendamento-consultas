@@ -2,6 +2,9 @@
 
 Sistema web para agendamento de consultas médicas com autenticação, integração com APIs externas e painel administrativo para funcionários.
 
+> [!IMPORTANT]
+Apenas um estudo de caso para entendimento do conceito REST e aprendizado sobre Vue.js
+
 ## Funcionalidades
 
 - Cadastro e login de usuários (pacientes e funcionários) com autenticação JWT
