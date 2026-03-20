@@ -106,7 +106,7 @@ describe('AppointmentsController', () => {
       expect(res.status).toBe(201)
     })
 
-    it('returns 500 when service throws an error', async () => {
+    it('returns 400 when service throws an error', async () => {
       vi.mocked(appointmentService.create).mockRejectedValue(new Error('Horário indisponível'))
 
       const res = await request(app).post(`${BASE}/appointments`).set(userAuth).send({
@@ -114,7 +114,7 @@ describe('AppointmentsController', () => {
         availableDateId: 'date-1',
       })
 
-      expect(res.status).toBe(500)
+      expect(res.status).toBe(400)
       expect(res.body).toHaveProperty('error', 'Horário indisponível')
     })
   })
@@ -142,12 +142,12 @@ describe('AppointmentsController', () => {
       expect(res.body[0]).toHaveProperty('id', 'appt-1')
     })
 
-    it('returns 500 on internal error while listing', async () => {
+    it('returns 400 on internal error while listing', async () => {
       vi.mocked(appointmentService.listAll).mockRejectedValue(new Error('Database error'))
 
       const res = await request(app).get(`${BASE}/appointments`).set(employeeAuth)
 
-      expect(res.status).toBe(500)
+      expect(res.status).toBe(400)
       expect(res.body).toHaveProperty('error', 'Database error')
     })
   })
@@ -194,12 +194,12 @@ describe('AppointmentsController', () => {
       expect(res.body).toHaveLength(1)
     })
 
-    it('returns 500 on internal error while listing', async () => {
+    it('returns 400 on internal error while listing', async () => {
       vi.mocked(appointmentService.listByUserId).mockRejectedValue(new Error('Database error'))
 
       const res = await request(app).get(`${BASE}/appointments/user-1`).set(userAuth)
 
-      expect(res.status).toBe(500)
+      expect(res.status).toBe(400)
       expect(res.body).toHaveProperty('error', 'Database error')
     })
   })
@@ -240,7 +240,7 @@ describe('AppointmentsController', () => {
       expect(res.status).toBe(204)
     })
 
-    it('returns 500 when service throws an error', async () => {
+    it('returns 400 when service throws an error', async () => {
       vi.mocked(appointmentService.delete).mockRejectedValue(
         new Error('Agendamento não encontrado'),
       )
@@ -250,7 +250,7 @@ describe('AppointmentsController', () => {
         .set(employeeAuth)
         .query({ availableDateId: 'date-1' })
 
-      expect(res.status).toBe(500)
+      expect(res.status).toBe(400)
       expect(res.body).toHaveProperty('error', 'Agendamento não encontrado')
     })
   })

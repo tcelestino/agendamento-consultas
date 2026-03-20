@@ -29,7 +29,7 @@ export class AppointmentsController {
       await this.appointmentService.create({ slotId, availableDateId, userId })
       return res.status(201).end()
     } catch (error) {
-      return res.status(500).json({ error: (error as Error).message })
+      return res.status(400).json({ error: (error as Error).message })
     }
   }
 
@@ -43,7 +43,7 @@ export class AppointmentsController {
       const result = await this.appointmentService.listAll()
       return res.status(200).json(result)
     } catch (error) {
-      return res.status(500).json({ error: (error as Error).message })
+      return res.status(400).json({ error: (error as Error).message })
     }
   }
 
@@ -68,7 +68,7 @@ export class AppointmentsController {
       const result = await this.appointmentService.listByUserId(userId as string)
       return res.status(200).json(result)
     } catch (error) {
-      return res.status(500).json({ error: (error as Error).message })
+      return res.status(400).json({ error: (error as Error).message })
     }
   }
 
@@ -89,7 +89,7 @@ export class AppointmentsController {
       await this.appointmentService.delete(id as string, availableDateId as string)
       return res.status(204).end()
     } catch (error) {
-      return res.status(500).json({ error: (error as Error).message })
+      return res.status(400).json({ error: (error as Error).message })
     }
   }
 }
